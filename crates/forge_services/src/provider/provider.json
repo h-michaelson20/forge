@@ -98,5 +98,13 @@
     "response_type": "OpenAI",
     "url": "https://{{AZURE_RESOURCE_NAME}}.openai.azure.com/openai/deployments/{{AZURE_DEPLOYMENT_NAME}}/chat/completions?api-version={{AZURE_API_VERSION}}",
     "model_url": "https://{{AZURE_RESOURCE_NAME}}.openai.azure.com/openai/models?api-version={{AZURE_API_VERSION}}"
+  },
+  {
+    "id": "switchpoint_ai",
+    "api_key_vars": "SWITCHPOINT_AI_API_KEY",
+    "url_param_vars": ["SWITCHPOINT_AI_PRICING"],
+    "response_type": "OpenAI",
+    "url": "{{#if (eq SWITCHPOINT_AI_PRICING \"dynamic\")}}https://www.switchpoint.dev/dynamic/v1/chat/completions{{else}}https://www.switchpoint.dev/v1/chat/completions{{/if}}",
+    "model_url": "{{#if (eq SWITCHPOINT_AI_PRICING \"dynamic\")}}https://www.switchpoint.dev/dynamic/v1/models{{else}}https://www.switchpoint.dev/v1/models{{/if}}"
   }
 ]

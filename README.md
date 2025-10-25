@@ -240,6 +240,20 @@ switch the model using `/model` command in the Forge CLI.
 </details>
 
 <details>
+<summary><strong>Switchpoint AI</strong></summary>
+
+```bash
+# .env
+SWITCHPOINT_AI_API_KEY=<your_switchpoint_api_key>
+# Optional: Set pricing mode (defaults to static pricing)
+SWITCHPOINT_AI_PRICING=dynamic  # or "static" for static pricing
+```
+
+_No changes in `forge.yaml` required_
+
+</details>
+
+<details>
 <summary><strong>OpenAI</strong></summary>
 
 ```bash
