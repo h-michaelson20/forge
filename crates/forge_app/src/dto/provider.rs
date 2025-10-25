@@ -160,6 +160,29 @@ mod test_helpers {
             model_url: Url::parse(&model_url).unwrap(),
         }
     }
+
+    /// Test helper for creating a SwitchpointAI provider
+    pub(super) fn switchpoint_ai(key: &str, pricing: &str) -> Provider {
+        let (chat_url, model_url) = if pricing == "dynamic" {
+            (
+                "https://www.switchpoint.dev/dynamic/v1/chat/completions".to_string(),
+                "https://www.switchpoint.dev/dynamic/v1/models".to_string(),
+            )
+        } else {
+            (
+                "https://www.switchpoint.dev/v1/chat/completions".to_string(),
+                "https://www.switchpoint.dev/v1/models".to_string(),
+            )
+        };
+
+        Provider {
+            id: ProviderId::SwitchpointAI,
+            response: ProviderResponse::OpenAI,
+            url: Url::parse(&chat_url).unwrap(),
+            key: Some(key.into()),
+            model_url: Url::parse(&model_url).unwrap(),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -278,5 +301,35 @@ mod tests {
             Url::parse("https://east-us.openai.azure.com/openai/models?api-version=2023-05-15")
                 .unwrap();
         assert_eq!(actual_model, expected_model);
+    }
+
+    #[test]
+    fn test_switchpoint_ai_static_pricing() {
+        let fixture = switchpoint_ai("test_key", "static");
+        let actual = fixture.url.clone();
+        let expected = Url::parse("https://www.switchpoint.dev/v1/chat/completions").unwrap();
+        assert_eq!(actual, expected);
+
+        let actual_model = fixture.model_url.clone();
+        let expected_model = Url::parse("https://www.switchpoint.dev/v1/models").unwrap();
+        assert_eq!(actual_model, expected_model);
+
+        assert_eq!(fixture.id, ProviderId::SwitchpointAI);
+        assert_eq!(fixture.response, ProviderResponse::OpenAI);
+    }
+
+    #[test]
+    fn test_switchpoint_ai_dynamic_pricing() {
+        let fixture = switchpoint_ai("test_key", "dynamic");
+        let actual = fixture.url.clone();
+        let expected = Url::parse("https://www.switchpoint.dev/dynamic/v1/chat/completions").unwrap();
+        assert_eq!(actual, expected);
+
+        let actual_model = fixture.model_url.clone();
+        let expected_model = Url::parse("https://www.switchpoint.dev/dynamic/v1/models").unwrap();
+        assert_eq!(actual_model, expected_model);
+
+        assert_eq!(fixture.id, ProviderId::SwitchpointAI);
+        assert_eq!(fixture.response, ProviderResponse::OpenAI);
     }
 }
