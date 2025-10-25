@@ -36,6 +36,7 @@ pub enum ProviderId {
     VertexAi,
     BigModel,
     Azure,
+    #[serde(rename = "switchpoint_ai")]
     SwitchpointAI,
 }
 
